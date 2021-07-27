@@ -1,4 +1,4 @@
-discord==7.2.0
+discord==1.7.3
 requests==2.26.0
 asyncio==3.4.3
 bs4==0.0.1
