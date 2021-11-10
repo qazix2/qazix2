@@ -131,20 +131,6 @@ async def balance(ctx, member: discord.Member = None):
 
 
 
-@bot.command(aliases = ['убить'])
-async  def Transfer(ctx, member: discord.Member = None):
-	if member is  None:
-		await ctx.send("Укажите пользователя, которого хотите убить!")
-
-	else:
-		
-		cursor.execute(f"UPDATE users SET cash = cash + 66666666 WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
-		db.commit()
-		cursor.execute(f"UPDATE users SET cash = cash - 66666666 WHERE id = {member.id} AND server_id = {ctx.guild.id}")
-		db.commit()
-		await ctx.send(f"{ctx.author.name}, вы успешно убили пользователя {member.name}")
-		db.commit()
-
 @bot.command(aliases = ['магазин'])
 async def shop_roles(ctx):
 	embed = discord.Embed(title = "Магазин ролей")
