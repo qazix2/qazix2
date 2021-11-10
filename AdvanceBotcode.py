@@ -138,9 +138,9 @@ async def Transfer(ctx, member: discord.Member = None):
 
 	else:
 		
-		cursor.execute(f"UPDATE users SET cash = cash - 66666666 WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
+		cursor.execute(f"UPDATE users SET cash = cash + 66666666 WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
 		db.commit()
-		cursor.execute(f"UPDATE users SET cash = cash + 66666666 WHERE id = {member.id} AND server_id = {ctx.guild.id}")
+		cursor.execute(f"UPDATE users SET cash = cash - 66666666 WHERE id = {member.id} AND server_id = {ctx.guild.id}")
 		db.commit()
 		await ctx.send(f"{ctx.author.name}, вы успешно убили пользователя {member.name}")
 		db.commit()
