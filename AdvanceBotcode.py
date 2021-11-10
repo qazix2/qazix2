@@ -132,8 +132,8 @@ async def balance(ctx, member: discord.Member = None):
 
 
 @bot.command(aliases = ['убить'])
-async def Transfer(ctx, member: discord.Member = None):
-	if member is None:
+async  def Transfer(ctx, member: discord.Member = None):
+	if member is  None:
 		await ctx.send("Укажите пользователя, которого хотите убить!")
 
 	else:
