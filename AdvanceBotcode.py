@@ -34,10 +34,12 @@ async def on_ready():
 		wait TEXT,
 		server_id INT,
 		busines TEXT,
-		busines_balance BIGINT
+		busines_balance BIGINT,
+		hp INT
 	)''')
 
 	db.commit()
+	
 	
 	cursor.execute('''CREATE TABLE IF NOT EXISTS role_shop (
 		role_id INT,
@@ -128,6 +130,16 @@ async def balance(ctx, member: discord.Member = None):
 		data_cash = cursor.fetchone()[0]
 		await ctx.send("Баланс пользователя {0} составляет {1} пуллов".format(member.mention, data_cash))
 		db.commit()
+
+@bot.command(aliases = ['хп', 'hp'])
+async def balance(ctx, member: discord.Member = None):
+	if member is None:
+		cursor.execute(f"SELECT hp FROM users WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
+		await ctx.send("HP пользователя {0} составляет {1} ".format(ctx.author.mention, cursor.fetchone()[0]))
+		print(ctx.guild.id)
+		db.commit()
+	else:
+		pass
 
 
 
@@ -463,6 +475,8 @@ async def casino(ctx, amount: int = False):
 		await ctx.send("Сумма не может быть равна нулю 0!")
 	elif amount > cursor.execute(f"SELECT cash FROM users WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}").fetchone()[0]:
 		await ctx.send("У вас нет данной суммы на вашем балансе!")
+	if amout <= 0:
+		await ctx.send("stop using bug!")
 	else:
 		win_rand = random.randint(1, 3)
 		if win_rand == 1:
