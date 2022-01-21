@@ -34,12 +34,10 @@ async def on_ready():
 		wait TEXT,
 		server_id INT,
 		busines TEXT,
-		busines_balance BIGINT,
-		hp INT
+		busines_balance BIGINT
 	)''')
 
 	db.commit()
-	
 	
 	cursor.execute('''CREATE TABLE IF NOT EXISTS role_shop (
 		role_id INT,
@@ -118,7 +116,7 @@ async def on_member_join(member):
 		pass
 
 
-@bot.command(aliases = ['баланс', 'кэш'])
+@bot.command(aliases = ['баланс', 'кэш', "пулл", "pull"])
 async def balance(ctx, member: discord.Member = None):
 	if member is None:
 		cursor.execute(f"SELECT cash FROM users WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
@@ -130,17 +128,6 @@ async def balance(ctx, member: discord.Member = None):
 		data_cash = cursor.fetchone()[0]
 		await ctx.send("Баланс пользователя {0} составляет {1} пуллов".format(member.mention, data_cash))
 		db.commit()
-
-@bot.command(aliases = ['хп', 'hp'])
-async def balance(ctx, member: discord.Member = None):
-	if member is None:
-		cursor.execute(f"SELECT hp FROM users WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
-		await ctx.send("HP пользователя {0} составляет {1} ".format(ctx.author.mention, cursor.fetchone()[0]))
-		print(ctx.guild.id)
-		db.commit()
-	else:
-		pass
-
 
 
 @bot.command(aliases = ['магазин'])
@@ -195,7 +182,7 @@ async def buy_role(ctx, *, role: discord.Role = None):
 			await ctx.send(f'Вы успешно приобрели роль {role.name}')
 
 
-@bot.command(aliases = ['реп', 'репутация'])
+@bot.command(aliases = ['реп', 'репутация', 'золото'])
 async def rep(ctx, member: discord.Member = None):
 	if member is None:
 		cursor.execute(f"SELECT rep FROM users WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}")
@@ -343,7 +330,7 @@ async def all_works(ctx, work1: str = None):
 			await ctx.send("Данной профессии нет в списке!")
 
 
-@bot.command(aliases = ['курс', 'Курс'])
+@bot.command(aliases = ['курс', 'Курс', 'котировка',])
 async def course(ctx):
 	url = 'https://quote.rbc.ru/ticker/101039'
 	headers = {'User-Agent': 'Mozilla/5.0 (Linux; Android 8.0.0; AUM-L41 Build/HONORAUM-L41; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.149 Mobile Safari/537.36 GSA/11.1.9.21.arm64'}
@@ -419,7 +406,7 @@ async def event_work(ctx):
 		await ctx.send('Чтобы работать, вам нужно приобрести профессию! Загляни в список профессий при помощи команды "!профессии"')
 
 
-@bot.command(aliases = ['обмен', 'обменять'])
+@bot.command(aliases = ['обмен', 'обменять',])
 async def exchange(ctx, amount : float = None, currency : str = None):
 	if amount is None:
 		await ctx.send("Укажите сумму для обмена: в пуллах, или репутации!")
@@ -467,7 +454,7 @@ async def exchange(ctx, amount : float = None, currency : str = None):
 					await ctx.send(f"Обмен успешно совершён! Вы п0олучили {int(result_exch)} пуллов")
 
 
-@bot.command(aliases = ['казино'])
+@bot.command(aliases = ['казино', 'азино','Казино',])
 async def casino(ctx, amount: int = False):
 	if amount is None:
 		await ctx.send("Укажите сумму, которую хотите поставить в казино!")
@@ -475,8 +462,6 @@ async def casino(ctx, amount: int = False):
 		await ctx.send("Сумма не может быть равна нулю 0!")
 	elif amount > cursor.execute(f"SELECT cash FROM users WHERE id = {ctx.author.id} AND server_id = {ctx.guild.id}").fetchone()[0]:
 		await ctx.send("У вас нет данной суммы на вашем балансе!")
-	if amout <= 0:
-		await ctx.send("stop using bug!")
 	else:
 		win_rand = random.randint(1, 3)
 		if win_rand == 1:
@@ -646,13 +631,13 @@ async def Promo_1(ctx, name):
 	if name == "first_rep":
 		cursor.execute(f"UPDATE users SET rep = rep + 1 WHERE id = {ctx.author.id}")
 
-@bot.command(aliases = ['промо'])
+@bot.command(aliases = ['промокод'])
 async def Promo_2(ctx, name):
 	if name == "first_pull":
 		cursor.execute(f"UPDATE users SET cash = cash + 1000000 WHERE id = {ctx.author.id}")
 
 
-@bot.command(aliases = ['перевести'])
+@bot.command(aliases = ['перевести', 'перевод', "отдать",])
 async def Transfer(ctx, member: discord.Member = None, amount: int = None, currency = None):
 	if member is None:
 		await ctx.send("Укажите пользователя, которому хотите перевести определённую сумму!")
