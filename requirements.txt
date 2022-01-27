@@ -2,7 +2,6 @@ altgraph==0.17
 async-timeout==3.0.1
 asyncio==3.4.3
 attrs==21.4.0
-beautifulsoup==3.2.0
 bs==40.0.1
 certifi==2021.5.30
 chardet==4.0.0
